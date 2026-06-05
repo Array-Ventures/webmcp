@@ -112,24 +112,26 @@ The page must be a secure context (HTTPS or `localhost`). Plain `http://` will n
 --enable-features=WebModelContext,WebMCPTesting
 ```
 
-These may be insufficient for a given Chromium build. When `detect` comes back with both APIs
+These may be insufficient for a given Chromium build. When the report comes back with both APIs
 false on a site you know is WebMCP-enabled, point the script at Canary/Beta and run headed:
 
 ```bash
 WEBMCP_CHROME="/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary" \
-  node scripts/webmcp-probe.mjs detect https://render.com --headed
+  node scripts/webmcp-probe.mjs https://render.com --headed
 ```
 
-Options:
+The script takes a URL positional plus these flags:
+- `--call <name>` — invoke this tool after inspecting.
+- `--args <json>` — JSON object for `--call` (default `"{}"`).
+- `--write` — permit `--call` on a tool the site labels `write`/`action`.
+- `--chrome <path>` — browser binary; same effect as `WEBMCP_CHROME`.
 - `--headed` — show the window (needed when a flagged external Chrome is required).
-- `--chrome <path>` — Chrome executable; same effect as `WEBMCP_CHROME`.
-- `--wait-ms <n>` — extra wait after load for late tool registration (default 2500).
-- `--timeout-ms <n>` — navigation/page timeout (default 15000).
-- `--allow-side-effects` — permit calling non-`read` or sensitive-named tools.
-- `--json` — machine-readable output only.
+- `--wait <ms>` — settle time after load for late registration (default 2500).
+- `--timeout <ms>` — navigation timeout (default 15000).
 
-Requires `playwright` (`npm i playwright` / `npx playwright install chromium`). The script
-contacts only the URL you pass — no analytics, no directory, no telemetry.
+Output is always a single JSON object on stdout. Requires `playwright`
+(`npm i playwright` / `npx playwright install chromium`). The script contacts only the URL you
+pass — no analytics, no directory, no telemetry.
 
 ## Failure modes
 
@@ -137,7 +139,7 @@ contacts only the URL you pass — no analytics, no directory, no telemetry.
 |---|---|---|
 | Both APIs false on a known WebMCP site | testing flag off / browser too old | enable flag, use Canary/Beta |
 | APIs present, `tools` empty, console `SecurityError ... exposedTo` | site passed `http://` origins to `registerTool`; first throw aborts all registrations | report as a site bug; not fixable from the agent side |
-| APIs present, `tools` empty, no console error | late registration, sub-route, or login-gated | re-probe after `--wait-ms`, navigate to the tool's page, or sign in |
+| APIs present, `tools` empty, no console error | late registration, sub-route, or login-gated | re-probe after `--wait`, navigate to the tool's page, or sign in |
 | `tools` empty but `[toolname]` elements exist | declarative tools not surfaced by the JS list | use the declarative metadata; for the fallback, submit the form fields |
 | `executeTool` → `Failed to parse input arguments` | passed an object | pass `JSON.stringify(args)` |
 | `executeTool` → validation error | args don't match `inputSchema` | satisfy `required`, drop unknown keys |
