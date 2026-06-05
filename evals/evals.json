@@ -1,0 +1,23 @@
+{
+  "skill_name": "webmcp",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "does render.com have any webmcp tools? if so list them",
+      "expected_output": "Detects navigator.modelContext + modelContextTesting are present and lists the 5 render.* tools (docs.search, docs.get-markdown, blog.get-index, articles.get-index, llms.get-index) with their input schemas.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "use webmcp on render.com to search the docs for 'background worker' and tell me the top result",
+      "expected_output": "Calls render.docs.search via executeTool with JSON.stringify({query:'background worker'}), parses structuredContent, reports 'Background Workers' as the top hit. Does not pass args as a raw object.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "i opened https://googlechromelabs.github.io/webmcp-tools/demos/pizza-maker/ in my webmcp chrome but listTools() returns nothing. whats wrong?",
+      "expected_output": "Diagnoses by checking console errors, identifies the SecurityError from http:// origins in the exposedTo list aborting all registrations, explains it's a site bug not the user's setup.",
+      "files": []
+    }
+  ]
+}

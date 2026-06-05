@@ -1,0 +1,16 @@
+{
+  "name": "webmcp-skill",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Agent skill: detect and use WebMCP (navigator.modelContext) tools on a website.",
+  "scripts": {
+    "probe": "node scripts/webmcp-probe.mjs detect https://render.com",
+    "list": "node scripts/webmcp-probe.mjs list https://render.com",
+    "smoke": "node --check scripts/webmcp-probe.mjs && echo 'script OK'"
+  },
+  "devDependencies": {
+    "playwright": "latest"
+  },
+  "license": "MIT"
+}
