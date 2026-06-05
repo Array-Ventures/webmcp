@@ -48,16 +48,18 @@ The skill drives the browser through your agent's Playwright/MCP browser when on
 If not, the bundled `scripts/webmcp-probe.mjs` launches its own Chromium:
 
 ```bash
-node scripts/webmcp-probe.mjs detect https://render.com
-node scripts/webmcp-probe.mjs list   https://render.com
-node scripts/webmcp-probe.mjs call   https://render.com render.docs.search '{"query":"background worker"}'
+# Inspect the page's WebMCP surface (prints one JSON report)
+node scripts/webmcp-probe.mjs https://render.com
+
+# Inspect, then invoke one tool
+node scripts/webmcp-probe.mjs https://render.com --call render.docs.search --args '{"query":"background worker"}'
 ```
 
 When the bundled Chromium lacks the flag, point at Canary/Beta:
 
 ```bash
 WEBMCP_CHROME="/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary" \
-  node scripts/webmcp-probe.mjs detect https://render.com --headed
+  node scripts/webmcp-probe.mjs https://render.com --headed
 ```
 
 ## Try it
